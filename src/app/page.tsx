@@ -1,6 +1,6 @@
-
+"use client"
 import Image from "next/image";
-
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const images = [
@@ -10,38 +10,62 @@ export default function Home() {
     "/images/monk.jpg",
     "/images/sax.jpg",
   ];
-  const randomIndex = Math.floor(Math.random() * images.length);
-  const selectedImage = images[randomIndex];
+  
+  // Create states for all random/calculated values
+  const [selectedImage, setSelectedImage] = useState("");
+  const [randomBrightness, setRandomBrightness] = useState(0);
+  const [brightness, setBrightness] = useState("");
+  const [golden, setGolden] = useState(false);
+  const [prism, setPrism] = useState(false);
 
-  const randomBrightness = Math.random() * 0.8 + 0.2;
-  const brightness = `brightness(${randomBrightness})`;
+  // Calculate everything in useEffect on component mount
+  useEffect(() => {
+    // Random image selection
+    const randIndex = Math.floor(Math.random() * images.length);
+    setSelectedImage(images[randIndex]);
+    
+    // Random brightness
+    const randBrightness = Math.random() * 0.8 + 0.2;
+    setRandomBrightness(randBrightness);
+    setBrightness(`brightness(${randBrightness})`);
+    
+    // Special cases
+    if (randBrightness > 0.95) {
+      setPrism(true);
+    } else if (randBrightness > 0.9) {
+      setGolden(true);
+    }
+  }, []); // Empty dependency array means run once on mount
 
-  let golden = false;
-  let prism = false;
-
-  if (randomBrightness > 0.95) {
-    prism = true;
-  } else if (randomBrightness > 0.9) {
-    golden = true;
-  }
   return (
     <div style={{marginTop: "50px", display: "flex", flexDirection: "column", height: "90vh"}}>
       
-      <h1 style={{fontSize: "50px",fontStyle: "italic",fontFamily: "bastligen"}}> <center>Fatih Cem</center></h1>
+      <h1 style={{fontSize: "50px", fontStyle: "italic", fontFamily: "bastligen"}}>
+        <center>Fatih Cem</center>
+      </h1>
+      
       <div style={{
         margin: "40px auto",
         maxWidth: "600px",
         padding: "20px",
         position: "relative"
       }}>
-      <Image 
-        src={selectedImage} 
-        alt="Fatih Cem" 
-        width={500} 
-        height={500} 
-        style={{
-          filter:brightness,
-          border: prism ? "3px solid rgb(67, 220, 255)" : golden ? "2px solid gold" : "none" }}   />
+        {selectedImage && (
+          <Image 
+            src={selectedImage} 
+            alt="Fatih Cem" 
+            width={500} 
+            height={500} 
+            style={{
+              filter: brightness,
+              border: prism 
+                ? "3px solid rgb(67, 220, 255)" 
+                : golden 
+                  ? "2px solid gold" 
+                  : "none"
+            }} 
+          />
+        )}
       </div>
       
       <div style={{
@@ -69,7 +93,6 @@ export default function Home() {
           İsmi bilinmeyen kişi, -2025
         </p>
       </div>
-      
     </div>
   );
 }
