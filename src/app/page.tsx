@@ -1,6 +1,5 @@
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
 
 export default function Home() {
@@ -19,7 +18,7 @@ export default function Home() {
 
   let golden = false;
   let prism = false;
-  
+
   if (randomBrightness > 0.95) {
     prism = true;
   } else if (randomBrightness > 0.9) {
@@ -35,7 +34,7 @@ export default function Home() {
         padding: "20px",
         position: "relative"
       }}>
-      <img 
+      <Image 
         src={selectedImage} 
         alt="Fatih Cem" 
         width={500} 
@@ -59,7 +58,7 @@ export default function Home() {
           fontStyle: "italic",
           marginBottom: "10px"
         }}>
-          "Kendini Cem sananların dünyasında yaşıyoruz..."
+          &quot;Kendini Cem sananların dünyasında yaşıyoruz...&quot;
         </p>
         
         <p style={{
