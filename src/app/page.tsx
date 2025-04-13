@@ -3,30 +3,29 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const images = [
-    "/images/chess.jpg",
-    "/images/man.jpg",
-    "/images/home.jpg",
-    "/images/monk.jpg",
-    "/images/sax.jpg",
-  ];
+  
   
   // Create states for all random/calculated values
   const [selectedImage, setSelectedImage] = useState("");
-  const [randomBrightness, setRandomBrightness] = useState(0);
   const [brightness, setBrightness] = useState("");
   const [golden, setGolden] = useState(false);
   const [prism, setPrism] = useState(false);
 
   // Calculate everything in useEffect on component mount
   useEffect(() => {
+    const images = [
+    "/images/chess.jpg",
+    "/images/man.jpg",
+    "/images/home.jpg",
+    "/images/monk.jpg",
+    "/images/sax.jpg",
+  ];
     // Random image selection
     const randIndex = Math.floor(Math.random() * images.length);
     setSelectedImage(images[randIndex]);
     
     // Random brightness
     const randBrightness = Math.random() * 0.8 + 0.2;
-    setRandomBrightness(randBrightness);
     setBrightness(`brightness(${randBrightness})`);
     
     // Special cases
@@ -35,7 +34,7 @@ export default function Home() {
     } else if (randBrightness > 0.9) {
       setGolden(true);
     }
-  }, []); // Empty dependency array means run once on mount
+  }, []);
 
   return (
     <div style={{marginTop: "50px", display: "flex", flexDirection: "column", height: "90vh"}}>
