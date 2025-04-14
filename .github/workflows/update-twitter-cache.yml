@@ -1,0 +1,68 @@
+name: Update Twitter Photo Cache Weekly
+
+on:
+  # Trigger the workflow automatically every Sunday at 03:00 UTC
+  schedule:
+    - cron: '0 3 * * 0' # Runs weekly Sunday at 3 AM UTC (adjust as needed)
+
+  # Allow manual triggering from the GitHub Actions UI
+  workflow_dispatch:
+
+# Set permissions for the GITHUB_TOKEN to allow committing back to the repo
+permissions:
+  contents: write
+
+jobs:
+  update_cache:
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner
+
+    steps:
+      # 1. Check out your repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Set up Bun (assuming you use Bun based on previous interactions)
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest # Or specify a version like "1.0.0"
+
+      # 3. Install project dependencies
+      - name: Install dependencies
+        run: bun install --frozen-lockfile # Use --frozen-lockfile for reproducible builds
+
+      # 4. Run the update script
+      # Ensure the path to your script is correct
+      - name: Run update script
+        run: bun run src/app/scripts/update-twitter-cache.ts
+        env:
+          # Use the GitHub Secret for the Bearer Token
+          TWITTER_BEARER_TOKEN: ${{ secrets.TWITTER_BEARER_TOKEN }}
+
+      # 5. Configure Git user for commit
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      # 6. Check if there are any changes in the cache directory
+      - name: Check for changes
+        id: changes # Give this step an ID to reference its output
+        run: |
+          git status --porcelain
+          if [[ -z $(git status --porcelain public/images/twitter) ]]; then
+            echo "No changes detected in Twitter image cache."
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected in Twitter image cache."
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      # 7. Commit and push changes *only if* changes were detected
+      - name: Commit and push changes
+        if: steps.changes.outputs.changed == 'true' # Conditional execution
+        run: |
+          git add public/images/twitter/*
+          # Use [skip ci] to prevent triggering other CI workflows if applicable
+          git commit -m "Update Twitter photo cache [skip ci]"
+          git push
