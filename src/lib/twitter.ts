@@ -33,7 +33,7 @@ interface TwitterApiResponse {
     next_token?: string;
     previous_token?: string;
   };
-  errors?: any[]; // Added for basic error checking from API
+  errors?: {code: string; message: string }[]; // Added for basic error checking from API
 }
 
 

@@ -1,6 +1,7 @@
 import { getImagePaths } from "./utils/getImages";
 import RandomImage from "./RandomImage";
 
+
 export default function Home() {
   // Get all image paths from the server
   const imagePaths = getImagePaths();

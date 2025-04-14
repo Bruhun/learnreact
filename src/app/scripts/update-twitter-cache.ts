@@ -22,7 +22,8 @@ async function downloadImage(url: string, filepath: string): Promise<void> {
              await fs.writeFile(filepath, Buffer.from(buffer));
          } else {
              // Fallback for environments without arrayBuffer (might need node-fetch)
-             const buffer = await (response as any).buffer(); // May need adjustment based on fetch implementation
+             // Convert to unknown first, then to the type with buffer method
+             const buffer = await (response as unknown as { buffer(): Promise<Buffer> }).buffer();
              await fs.writeFile(filepath, buffer);
          }
         console.log(`Successfully downloaded ${url} to ${filepath}`);

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { getImagePaths } from '../utils/getImages'; // Reuse or adapt this utility
 
 // Example in a Server Component page (e.g., src/app/test/page.tsx)
@@ -12,12 +13,14 @@ export default function TestPage() {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
           {photoUrls.map((url, index) => (
             // Use the local URL
-            <img
-              key={index}
-              src={url} // url will now be like '/images/twitter/twitter_photo_1.jpg'
-              alt={`Cached Twitter photo ${index + 1}`}
-              style={{ width: '200px', height: 'auto', border: '1px solid #ccc' }}
-            />
+            <Image
+                  key={index}
+                  src={url}
+                  alt={`Twitter photo ${index + 1}`}
+                  width={200}
+                  height={200}
+                  style={{ height: 'auto', border: '1px solid #ccc' }}
+                />
           ))}
         </div>
       ) : (
