@@ -7,7 +7,7 @@ export default function Home() {
   const imagePaths = getImagePaths();
 
   return (
-    <div style={{marginTop: "50px", display: "flex", flexDirection: "column", height: "90vh"}}>
+    <div style={{display: "flex",flexDirection: "column",  height: "100vh",alignItems: "center",gap: "1.5rem",justifyContent: "center"}}>
       
       <h1 style={{fontSize: "50px", fontStyle: "italic", fontFamily: "Bastligen"}}>
         <center>Fatih Cem</center>
@@ -17,8 +17,6 @@ export default function Home() {
       <RandomImage imagePaths={imagePaths} />
       
       <div style={{
-        marginTop: "auto", 
-        marginBottom: "50px",
         width: "80%",
         maxWidth: "700px",
         position: "relative",
@@ -28,7 +26,6 @@ export default function Home() {
           textAlign: "center",
           fontSize: "18px",
           fontStyle: "italic",
-          marginBottom: "10px"
         }}>
           &quot;Kendini Cem sananların dünyasında yaşıyoruz...&quot;
         </p>
@@ -36,7 +33,6 @@ export default function Home() {
         <p style={{
           textAlign: "right",
           fontSize: "16px",
-          marginTop: "5px"
         }}>
           İsmi bilinmeyen kişi, -2025
         </p>
