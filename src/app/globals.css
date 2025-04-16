@@ -4,6 +4,45 @@
   --background: #ffffff;
   --foreground: #171717;
 }
+.animated-border {
+  border: 8px solid transparent !important;
+  border-image-slice: 1 !important;
+  background-origin: border-box !important;
+  background-clip: border-box !important;
+  position: relative;
+  box-sizing: border-box;
+  
+  /* This will ensure proper background application */
+  -webkit-mask: 
+     linear-gradient(#fff 0 0) padding-box, 
+     linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+}
+@keyframes borderAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.border-common {
+  border-image-source: linear-gradient(to right, gray, maroon,white);
+  background-image: linear-gradient(to right, gray, maroon,white);
+  background-size: 200% auto;
+  animation: borderAnimation 4s ease infinite;
+}
+
+.border-uncommon {
+  border-image-source: linear-gradient(to right, rgb(100, 99, 0), rgb(255, 215, 0));
+  background-image: linear-gradient(to right, rgb(100, 99, 0), rgb(255, 215, 0));
+  background-size: 200% auto;
+  animation: borderAnimation 3s ease infinite;
+}
+
+.border-prismatic {
+  border-image-source: linear-gradient(to right, rgb(21, 228, 255), rgb(248, 40, 255));
+  background-image: linear-gradient(to right, rgb(21, 228, 255), rgb(248, 40, 255));
+  background-size: 200% auto;
+  animation: borderAnimation 1s ease infinite;
+}
 
 @theme inline {
   --color-background: var(--background);
