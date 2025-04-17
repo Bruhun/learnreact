@@ -24,8 +24,8 @@
   100% { background-position: 0% 50%; }
 }
 .border-common {
-  border-image-source: linear-gradient(to right, gray, maroon,white);
-  background-image: linear-gradient(to right, gray, maroon,white);
+  border-image-source: linear-gradient(to right, gray, maroon);
+  background-image: linear-gradient(to right, gray, maroon);
   background-size: 200% auto;
   animation: borderAnimation 4s ease infinite;
 }

@@ -11,12 +11,13 @@ export default function RandomImage({ imagePaths }: RandomImageProps) {
   const [selectedImage, setSelectedImage] = useState("");
   const [brightness, setBrightness] = useState("");
   const [borderClass, setBorderClass] = useState("");
-
+  const [floatNumber, setFloatNumber] = useState(0);
   useEffect(() => {
     const randIndex = Math.floor(Math.random() * imagePaths.length);
     setSelectedImage(imagePaths[randIndex]);
 
     const floatNumber = Math.random();
+    setFloatNumber(floatNumber);
 
     const randBrightness = floatNumber > 0.8 ? floatNumber * 0.2 + 0.8 : 0.5;
     setBrightness(`brightness(${randBrightness})`);
@@ -39,6 +40,7 @@ export default function RandomImage({ imagePaths }: RandomImageProps) {
   }
 
   return (
+    <div style={{ textAlign: "center"}} >
     <div className={`animated-border ${borderClass}`} style={{
       display: "inline-block",
       margin: "20px auto"
@@ -54,6 +56,10 @@ export default function RandomImage({ imagePaths }: RandomImageProps) {
           maxWidth: "100%"
         }}
       />
+    </div>
+    <div style={{ fontSize: "12px", color: "white",marginTop: "5px" }}>
+      Float: {floatNumber.toFixed(6)}
+    </div>
     </div>
   );
 }
