@@ -50,6 +50,7 @@ export default function RandomImage({ imagePaths }: RandomImageProps) {
         alt="Fatih Cem"
         width={500}
         height={500}
+        unoptimized={selectedImage.endsWith(".gif")}
         style={{
           filter: brightness,
           display: "block",
