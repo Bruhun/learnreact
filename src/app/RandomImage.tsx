@@ -12,7 +12,25 @@ export default function RandomImage({ imagePaths }: RandomImageProps) {
   const [brightness, setBrightness] = useState("");
   const [borderClass, setBorderClass] = useState("");
   const [floatNumber, setFloatNumber] = useState(0);
+  const [opacity, setOpacity] = useState(1);
+  
+  
+
   useEffect(() => {
+    // Add transition to body when component mounts
+    document.body.style.transition = "background-color 600ms ease-in-out, background-image 600ms ease-in-out";
+    
+    selectRandomImage();
+    
+    return () => {
+      // Clean up transitions when component unmounts
+      document.body.style.transition = "";
+    };
+  }, [imagePaths]);
+  
+  
+
+  const selectRandomImage = () => {
     const randIndex = Math.floor(Math.random() * imagePaths.length);
     setSelectedImage(imagePaths[randIndex]);
 
@@ -57,8 +75,18 @@ export default function RandomImage({ imagePaths }: RandomImageProps) {
     // Apply the pattern to the body
     document.body.style.backgroundImage = svgPattern;
     document.body.style.backgroundColor = bgColor;
-    }, [imagePaths]);
-
+  };
+  
+  const handleReroll = () => {
+    // Fade out image first
+    setOpacity(0);
+    
+    // After short delay, change image and fade it back in
+    setTimeout(() => {
+      selectRandomImage();
+      setTimeout(() => setOpacity(1), 50);
+    }, 300);
+  };
 
   if (!selectedImage) {
     return <div style={{ height: "508px", width: "508px", margin: "20px auto", border: "4px solid transparent" }}></div>;
@@ -66,26 +94,45 @@ export default function RandomImage({ imagePaths }: RandomImageProps) {
 
   return (
     <div style={{ textAlign: "center"}} >
-    <div className={`animated-border ${borderClass}`} style={{
-      display: "inline-block",
-      margin: "20px auto"
-    }}>
-      <Image
-        src={selectedImage}
-        alt="Fatih Cem"
-        width={500}
-        height={500}
-        unoptimized={selectedImage.endsWith(".gif")}
+      <div className={`animated-border ${borderClass}`} style={{
+        display: "inline-block",
+        margin: "20px auto"
+      }}>
+        <Image
+          src={selectedImage}
+          alt="Fatih Cem"
+          width={500}
+          height={500}
+          unoptimized={selectedImage.endsWith(".gif")}
+          style={{
+            filter: brightness,
+            display: "block",
+            maxWidth: "100%",
+            opacity: opacity,
+            transition: "opacity 300ms ease-in-out"
+          }}
+        />
+      </div>
+      <div style={{ fontSize: "12px", color: "white", marginTop: "5px" }}>
+        Float: {floatNumber.toFixed(6)}
+      </div>
+      <button 
+        onClick={handleReroll}
         style={{
-          filter: brightness,
-          display: "block",
-          maxWidth: "100%"
+          backgroundColor: "#444",
+          color: "white",
+          padding: "8px 16px",
+          borderRadius: "5px",
+          border: "none",
+          marginTop: "15px",
+          cursor: "pointer",
+          transition: "background-color 200ms ease",
         }}
-      />
-    </div>
-    <div style={{ fontSize: "12px", color: "white",marginTop: "5px" }}>
-      Float: {floatNumber.toFixed(6)}
-    </div>
+        onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#555"}
+        onMouseOut={(e) => e.currentTarget.style.backgroundColor = "#444"}
+      >
+        Reroll Image
+      </button>
     </div>
   );
 }
