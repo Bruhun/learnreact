@@ -96,7 +96,7 @@ export default function RandomImage({ imagePaths }: RandomImageProps) {
     <div style={{ textAlign: "center"}} >
       <div className={`animated-border ${borderClass}`} style={{
         display: "inline-block",
-        margin: "20px auto"
+        margin: "4px "
       }}>
         <Image
           src={selectedImage}
@@ -113,7 +113,7 @@ export default function RandomImage({ imagePaths }: RandomImageProps) {
           }}
         />
       </div>
-      <div style={{ fontSize: "12px", color: "white", marginTop: "5px" }}>
+      <div style={{ fontSize: "12px", color: "white", marginTop: "2px" }}>
         Float: {floatNumber.toFixed(6)}
       </div>
       <button 
@@ -124,7 +124,7 @@ export default function RandomImage({ imagePaths }: RandomImageProps) {
           padding: "8px 16px",
           borderRadius: "5px",
           border: "none",
-          marginTop: "15px",
+          marginTop: "6px",
           cursor: "pointer",
           transition: "background-color 200ms ease",
         }}
