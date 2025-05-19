@@ -9,7 +9,10 @@ const nextConfig: NextConfig = {
         hostname: 'pbs.twimg.com',
       },
     ],
+    unoptimized: true, // This ensures all images are served as-is
   },
+  // Ensure static files are properly handled
+  output: 'standalone',
 };
 
 export default nextConfig;

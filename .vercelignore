@@ -1,0 +1,14 @@
+# Ignore everything
+*
+
+# But not these files...
+!.git
+!package.json
+!package-lock.json
+!next.config.js
+!tsconfig.json
+!src
+!public
+!public/images
+!public/images/twitter
+!public/images/twitter/* 

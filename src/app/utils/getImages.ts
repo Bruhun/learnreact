@@ -29,10 +29,15 @@ export function getImagePaths() {
       // Add twitter directory images
       const twitterImages = twitterFiles.map(file => `/images/twitter/${file}`);
       allImagePaths = [...allImagePaths, ...twitterImages];
+    } else {
+      console.warn('Twitter directory does not exist:', twitterDirectory);
     }
   } catch (error) {
     console.error(`Error reading twitter images directory: ${error}`);
   }
+  
+  // Log the number of images found for debugging
+  console.log(`Found ${allImagePaths.length} total images (${allImagePaths.filter(p => p.includes('/twitter/')).length} from Twitter)`);
   
   return allImagePaths;
 }
