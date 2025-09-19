@@ -1,0 +1,18 @@
+.container {
+  background-color: white !important; /* Force override */
+  min-height: 100vh;
+  color: black;
+  padding: 1rem;
+  position: fixed; /* This will make it cover the entire viewport */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0; /* Adjust as needed */
+}
+
+.gameBoard {
+  /* Other styles for your game board */
+}
+
+/* Add other class styles as needed */

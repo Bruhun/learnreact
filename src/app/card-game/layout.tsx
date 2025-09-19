@@ -1,9 +1,9 @@
-import type { ReactNode } from "react";
+import React from "react";
 
 export default function CardGameLayout({
   children,
 }: {
-  children: ReactNode;
+  children: React.ReactNode;
 }) {
   return (
     <div style={{
