@@ -59,10 +59,27 @@ jobs:
           fi
 
       # 7. Commit and push changes *only if* changes were detected
-      - name: Commit and push changes
-        if: steps.changes.outputs.changed == 'true' # Conditional execution
+      - name: Commit cache changes
+        if: steps.changes.outputs.changed == 'true'
         run: |
           git add public/images/twitter/*
-          # Use [skip ci] to prevent triggering other CI workflows if applicable
-          git commit -m "Update Twitter photo cache [skip ci]"
-          git push
+          git commit -m "Update Twitter photo cache [skip ci]" || echo "No changes to commit"
+
+      # Use peter-evans/create-pull-request to create or update a PR from twitter-cache -> main
+      - name: Create or update Pull Request
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Update Twitter photo cache [skip ci]"
+          branch: twitter-cache
+          base: main
+          title: "Update Twitter photo cache"
+          body: "This PR updates the cached Twitter images. Review before merging."
+          draft: false
+          # Enable auto-merge when required checks and reviews pass
+          auto-merge: true
+          auto-merge-method: merge
+          # Automatically request review and assign the repo owner
+          reviewers: Bruhun
+          assignees: Bruhun
