@@ -68,6 +68,7 @@ jobs:
       # Use peter-evans/create-pull-request to create or update a PR from twitter-cache -> main
       - name: Create or update Pull Request
         if: steps.changes.outputs.changed == 'true'
+        id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -77,9 +78,13 @@ jobs:
           title: "Update Twitter photo cache"
           body: "This PR updates the cached Twitter images. Review before merging."
           draft: false
-          # Enable auto-merge when required checks and reviews pass
-          auto-merge: true
-          auto-merge-method: merge
           # Automatically request review and assign the repo owner
           reviewers: Bruhun
           assignees: Bruhun
+
+      # Enable auto-merge on the created PR
+      - name: Enable auto-merge
+        if: steps.changes.outputs.changed == 'true' && steps.cpr.outputs.pull-request-number != ''
+        run: gh pr merge --auto --merge "${{ steps.cpr.outputs.pull-request-number }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
