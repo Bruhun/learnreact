@@ -11,6 +11,7 @@ on:
 # Set permissions for the GITHUB_TOKEN to allow committing back to the repo
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   update_cache:
