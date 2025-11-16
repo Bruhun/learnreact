@@ -42,12 +42,6 @@ jobs:
           # Use the GitHub Secret for the Bearer Token
           TWITTER_BEARER_TOKEN: ${{ secrets.TWITTER_BEARER_TOKEN }}
 
-      # 5. Configure Git user for commit
-      - name: Configure Git
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
       # 6. Check if there are any changes in the cache directory
       - name: Check for changes
         id: changes # Give this step an ID to reference its output
