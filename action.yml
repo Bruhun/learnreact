@@ -1,0 +1,23 @@
+name: 'Update Twitter Photo Cache'
+description: 'Installs dependencies and runs the script to update twitter photos'
+inputs:
+  TWITTER_BEARER_TOKEN:
+    description: 'Twitter Bearer Token'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+
+    - name: Install dependencies
+      run: bun install --frozen-lockfile
+      shell: bash
+
+    - name: Run update script
+      run: bun run src/app/scripts/update-twitter-cache.ts
+      shell: bash
+      env:
+        TWITTER_BEARER_TOKEN: ${{ inputs.TWITTER_BEARER_TOKEN }}
