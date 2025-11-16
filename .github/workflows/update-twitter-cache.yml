@@ -62,13 +62,6 @@ jobs:
           fi
 
       # 7. Commit and push changes *only if* changes were detected
-      - name: Commit cache changes
-        if: steps.changes.outputs.changed == 'true'
-        run: |
-          git add public/images/twitter/*
-          git commit -m "Update Twitter photo cache [skip ci]" || echo "No changes to commit"
-
-      # Use peter-evans/create-pull-request to create or update a PR from twitter-cache -> main
       - name: Create or update Pull Request
         if: steps.changes.outputs.changed == 'true'
         id: cpr
