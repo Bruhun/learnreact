@@ -7,6 +7,7 @@ on:
 jobs:
   update-cache:
     runs-on: ubuntu-latest
+    # Add these permissions
     permissions:
       contents: write
       pull-requests: write
@@ -17,6 +18,13 @@ jobs:
         uses: ./
         with:
           TWITTER_BEARER_TOKEN: ${{ secrets.TWITTER_BEARER_TOKEN }}
+
+      # Add this step to configure git
+      - name: Configure git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        shell: bash
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
