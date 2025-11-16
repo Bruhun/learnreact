@@ -72,7 +72,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT }}
           commit-message: "Update Twitter photo cache [skip ci]"
           branch: twitter-cache
           base: main
