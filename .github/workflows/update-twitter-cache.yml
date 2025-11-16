@@ -55,26 +55,32 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
-      # 7. Commit and push changes *only if* changes were detected
-      - name: Create or update Pull Request
+      # 7. Manually Create Pull Request with Git & GitHub CLI
+      - name: Create Pull Request Manually
         if: steps.changes.outputs.changed == 'true'
-        id: cpr
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.PAT }}
-          commit-message: "Update Twitter photo cache [skip ci]"
-          branch: twitter-cache
-          base: main
-          title: "Update Twitter photo cache"
-          body: "This PR updates the cached Twitter images. Review before merging."
-          draft: false
-          # Automatically request review and assign the repo owner
-          reviewers: Bruhun
-          assignees: Bruhun
-
-      # Enable auto-merge on the created PR
-      - name: Enable auto-merge
-        if: steps.changes.outputs.changed == 'true' && steps.cpr.outputs.pull-request-number != ''
-        run: gh pr merge --auto --merge "${{ steps.cpr.outputs.pull-request-number }}"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT }}
+        run: |
+          # Configure git user
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Create and switch to the branch
+          git checkout -b twitter-cache
+          
+          # Add, commit, and push the changes
+          git add public/images/twitter/
+          git commit -m "Update Twitter photo cache [skip ci]"
+          git push --force origin twitter-cache
+          
+          # Create the pull request
+          gh pr create \
+            --base main \
+            --head twitter-cache \
+            --title "Update Twitter photo cache" \
+            --body "This PR updates the cached Twitter images. Review before merging." \
+            --assignee "Bruhun" \
+            --reviewer "Bruhun"
+          
+          # Enable auto-merge
+          gh pr merge --auto --merge
