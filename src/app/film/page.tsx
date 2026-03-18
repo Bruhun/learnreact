@@ -42,9 +42,9 @@ export default function FilmPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-extrabold mb-8 text-center tracking-tight">
-          Film Robotu 🤖 <br/>
-          <span className="text-xl font-medium text-gray-500 dark:text-gray-400">Turkish-Centric Movie Recommendations</span>
+        <h1 style={{fontSize: "50px", fontStyle: "italic", fontFamily: "Bastligen"}} className="mb-8 text-center">
+          Film Robotu <br/>
+          <span className="text-xl font-medium text-gray-500 dark:text-gray-400" style={{fontFamily: "sans-serif", fontStyle: "normal"}}>Turkish-Centric Movie Recommendations</span>
         </h1>
         
         <div className="flex flex-col sm:flex-row gap-4 mb-12">
