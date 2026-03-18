@@ -42,7 +42,7 @@ export async function GET(request: Request) {
 
     // 2. Director Match
     const credits = await fetchFromTMDB(`/movie/${inputId}/credits`);
-    const inputDirector = credits.crew.find((c: any) => c.job === 'Director')?.name;
+    const inputDirector = credits.crew.find((c: { job: string; name: string }) => c.job === 'Director')?.name;
 
     // 3. Get Recommendations
     const recsResponse = await fetchFromTMDB(`/movie/${inputId}/recommendations`, { language: 'tr-TR' });
@@ -62,9 +62,16 @@ export async function GET(request: Request) {
     const topCandidates = candidates.slice(0, 10);
     
     const scoredCandidates = await Promise.all(
-      topCandidates.map(async (movie: any) => {
+      topCandidates.map(async (movie: { 
+        id: number; 
+        title: string; 
+        original_title: string; 
+        poster_path: string | null; 
+        genre_ids: number[]; 
+        original_language: string 
+      }) => {
         let score = 0;
-        let insights: string[] = [];
+        const insights: string[] = [];
 
         // Drama Bonus
         if (movie.genre_ids && movie.genre_ids.includes(18)) {
@@ -90,12 +97,12 @@ export async function GET(request: Request) {
         let directorNode = null;
         try {
           const candCredits = await fetchFromTMDB(`/movie/${movie.id}/credits`);
-          directorNode = candCredits.crew.find((c: any) => c.job === 'Director');
+          directorNode = candCredits.crew.find((c: { job: string; name: string }) => c.job === 'Director');
           if (directorNode && directorNode.name === inputDirector) {
             score += 15;
             insights.push('same director');
           }
-        } catch (e) {
+        } catch {
           // ignore credit fetch errors
         }
 
@@ -124,11 +131,12 @@ export async function GET(request: Request) {
       recommendations: finalTop3
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Recommendation API Error:', error);
     // Return detailed error message for debugging
+    const errorMessage = error instanceof Error ? error.message : 'Failed to process recommendations';
     return NextResponse.json({ 
-      error: error.message || 'Failed to process recommendations' 
+      error: errorMessage
     }, { status: 500 });
   }
 }

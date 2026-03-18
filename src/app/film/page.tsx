@@ -28,12 +28,16 @@ export default function FilmPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || 'Something went wrong');
+        throw new Error(data.error || 'Bir hata oluştu');
       }
 
       setRecommendations(data.recommendations);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
     } finally {
       setLoading(false);
     }
@@ -44,7 +48,7 @@ export default function FilmPage() {
       <div className="max-w-4xl mx-auto">
         <h1 style={{fontSize: "50px", fontStyle: "italic", fontFamily: "Bastligen"}} className="mb-8 text-center">
           Film Robotu <br/>
-          <span className="text-xl font-medium text-gray-500 dark:text-gray-400" style={{fontFamily: "sans-serif", fontStyle: "normal"}}>Turkish-Centric Movie Recommendations</span>
+          <span className="text-xl font-medium text-gray-500 dark:text-gray-400" style={{fontFamily: "sans-serif", fontStyle: "normal"}}>Türk bazlı Film Önerileri</span>
         </h1>
         
         <div className="flex flex-col sm:flex-row gap-4 mb-12">
@@ -61,7 +65,7 @@ export default function FilmPage() {
             disabled={loading}
             className="px-8 py-4 bg-black dark:bg-white text-white dark:text-black font-semibold rounded-xl hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
           >
-            {loading ? 'Searching...' : 'Get Recommendations'}
+            {loading ? 'Aranıyor...' : 'Öneri Al'}
           </button>
         </div>
 
@@ -81,6 +85,7 @@ export default function FilmPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
             {recommendations.map((movie) => (
               <div key={movie.id} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-5 rounded-2xl hover:shadow-xl transition-shadow flex flex-col">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://placehold.co/500x750?text=No+Poster'} 
                   alt={movie.title} 
@@ -88,7 +93,7 @@ export default function FilmPage() {
                 />
                 <h3 className="text-lg font-bold mb-2 line-clamp-1">{movie.title}</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-auto bg-gray-50 dark:bg-gray-900/50 p-3 rounded-lg border border-gray-100 dark:border-gray-700/50 italic">
-                  "{movie.insight}"
+                  &quot;{movie.insight}&quot;
                 </p>
               </div>
             ))}
@@ -97,7 +102,7 @@ export default function FilmPage() {
 
         {!loading && recommendations.length === 0 && !error && query && (
           <div className="text-center text-gray-500 dark:text-gray-400 mt-10">
-            No recommendations found. Try another movie!
+            Öneri bulunamadı. Başka bir film deneyin!
           </div>
         )}
       </div>
